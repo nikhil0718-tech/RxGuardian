@@ -1,3 +1,4 @@
+print("STEP 1")
 from fastapi import FastAPI
 
 from fastapi.middleware.cors import (
@@ -30,67 +31,82 @@ from app.utils.advanced_reminder_scheduler import (
 from app.routes.auth_routes import (
     router as auth_router
 )
+print("AUTH IMPORTED")
+
 
 from app.routes.user_routes import (
     router as user_router
 )
+print("USER IMPORTED")
 
 from app.routes.patient_routes import (
     router as patient_router
 )
+print("PATIENT IMPORTED")
 
 from app.routes.doctor_routes import (
     router as doctor_router
 )
+print("DOCTOR IMPORTED")
 
 from app.routes.guardian_routes import (
     router as guardian_router
 )
+print("GUARDIAN IMPORTED")
 
 from app.routes.prescription_routes import (
     router as prescription_router
 )
+print("PRESCRIPTION IMPORTED")
 
 from app.routes.reminder_routes import (
     router as reminder_router
 )
+print("REMINDER IMPORTED")
 
 from app.routes.adherence_routes import (
     router as adherence_router
 )
+print("ADHERENCE IMPORTED")
 
 from app.routes.risk_routes import (
     router as risk_router
 )
+print("RISK IMPORTED")
 
 from app.routes.guardian_alert_routes import (
     router as guardian_alert_router
 )
+print("GUARDIAN ALERT IMPORTED")
 
 from app.routes.medicine_agent_routes import (
     router as medicine_agent_router
 )
+print("MEDICINE AGENT IMPORTED")
 
 from app.routes.medicine_chat_routes import (
     router as medicine_chat_router
 )
+print("MEDICINE CHAT IMPORTED")
 
 from app.routes.ai_routes import (
     router as ai_router
 )
+print("AI IMPORTED")
 
 from app.routes.assistant_routes import (
     router as assistant_router
 )
+print("ASSISTANT IMPORTED")
 
 from app.routes.test_routes import (
     router as test_router
 )
-
+print("TEST IMPORTED")
 # =====================================================
 # FASTAPI APP
 # =====================================================
-
+print("FASTAPI APP CREATED")
 app = FastAPI(
 
     title="RxGuardian API",
