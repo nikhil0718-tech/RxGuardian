@@ -105,13 +105,13 @@ app = FastAPI(
 app.add_middleware(
 
     CORSMiddleware,
+    allow_origins=["*"],
+    # allow_origins=[
 
-    allow_origins=[
+    #     "http://localhost:5173",
 
-        "http://localhost:5173",
-
-        "http://127.0.0.1:5173"
-    ],
+    #     "http://127.0.0.1:5173"
+    # ],
 
     allow_credentials=True,
 
@@ -151,10 +151,6 @@ app.include_router(
 )
 
 app.include_router(guardian_alert_router)
-
-app.include_router(
-    medicine_agent_router
-)
 
 app.include_router(ai_router)
 
@@ -197,13 +193,7 @@ def reminder_background():
 # START BACKGROUND THREAD
 # =====================================================
 
-threading.Thread(
 
-    target=reminder_background,
-
-    daemon=True
-
-).start()
 
 print(
     "Advanced Reminder Scheduler Started"
@@ -239,3 +229,13 @@ def health_check():
 
         "project": "RxGuardian"
     }
+
+@app.on_event("startup")
+def startup_event():
+
+    threading.Thread(
+        target=reminder_background,
+        daemon=True
+    ).start()
+
+    print("Advanced Reminder Scheduler Started")
