@@ -56,7 +56,8 @@ print("BEFORE MODEL LOAD")
 
 print("Loading AI model...")
 
-model = load_model(MODEL_PATH)
+# model = load_model(MODEL_PATH)
+model = None
 
 print("Model Loaded Successfully")
 print("AFTER MODEL LOAD")
