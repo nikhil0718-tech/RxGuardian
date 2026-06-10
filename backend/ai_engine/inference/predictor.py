@@ -1,3 +1,4 @@
+print("PREDICTOR START")
 import os
 import json
 import numpy as np
@@ -48,7 +49,7 @@ LABELS_PATH = os.path.join(
     "model",
     "medicine_class_labels.json"
 )
-
+print("BEFORE MODEL LOAD")
 # =====================================================
 # LOAD MODEL
 # =====================================================
@@ -58,7 +59,7 @@ print("Loading AI model...")
 model = load_model(MODEL_PATH)
 
 print("Model Loaded Successfully")
-
+print("AFTER MODEL LOAD")
 # =====================================================
 # LOAD LABELS
 # =====================================================

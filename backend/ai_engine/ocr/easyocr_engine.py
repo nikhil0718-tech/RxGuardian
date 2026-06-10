@@ -1,3 +1,4 @@
+print("EASYOCR START")
 import easyocr
 import cv2
 import numpy as np
@@ -10,7 +11,7 @@ import torch
 GPU_ENABLED = torch.cuda.is_available()
 
 print(f"OCR GPU Enabled: {GPU_ENABLED}")
-
+print("BEFORE EASYOCR READER")
 # ---------------------------------------------------
 # EASYOCR READER
 # ---------------------------------------------------
@@ -20,6 +21,7 @@ reader = easyocr.Reader(
     gpu=GPU_ENABLED
 )
 
+print("AFTER EASYOCR READER")   
 # ---------------------------------------------------
 # EXTRACT TEXT
 # ---------------------------------------------------
