@@ -12,7 +12,7 @@ async (
   const response =
     await axios.post(
 
-      "http://localhost:8000/assistant/chat",
+      "https://api.rxguardian.xyz/assistant/chat",
 
       {
 

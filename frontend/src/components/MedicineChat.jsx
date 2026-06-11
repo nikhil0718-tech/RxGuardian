@@ -20,7 +20,7 @@ export default function MedicineChat({
     const response =
     await axios.post(
 
-      "http://localhost:8000/medicine-chat/ask",
+      "https://api.rxguardian.xyz/medicine-chat/ask",
 
       {
         medicine_name:

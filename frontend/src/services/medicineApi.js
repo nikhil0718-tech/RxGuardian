@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const API_URL =
-  "http://localhost:8000";
+const API_URL = "https://api.rxguardian.xyz";
 
 export const analyzeMedicine =
   async (file) => {

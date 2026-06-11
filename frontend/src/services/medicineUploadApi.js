@@ -14,7 +14,7 @@ async (file) => {
   const response =
     await axios.post(
 
-      "http://localhost:8000/medicine/analyze",
+      "https://api.rxguardian.xyz/medicine/analyze",
 
       formData,
 

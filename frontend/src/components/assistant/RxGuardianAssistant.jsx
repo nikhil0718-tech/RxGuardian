@@ -112,7 +112,7 @@ I'm here to help with medicine information and guidance.`
 });
         await axios.post(
 
-          "http://localhost:8000/assistant/set-context",
+          "https://api.rxguardian.xyz/assistant/set-context",
 
           {
 
