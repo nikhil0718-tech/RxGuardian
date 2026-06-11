@@ -193,9 +193,9 @@ const Reports = () => {
                   Generate and download a comprehensive PDF report of the patient's medication adherence history.
                 </p>
               </div>
-
+{/* http://127.0.0.1:8000 */}
               <a
-                href={`http://127.0.0.1:8000/guardian/download-report/${email}`}
+                href={`https://api.rxguardian.xyz/guardian/download-report/${email}`}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-2xl text-white text-sm font-bold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-200 hover:-translate-y-0.5 flex-shrink-0"

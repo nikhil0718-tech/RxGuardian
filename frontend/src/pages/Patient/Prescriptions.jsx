@@ -168,7 +168,7 @@ function PrescriptionCard({ session, index }) {
               </p>
 
               <a
-                href={`http://127.0.0.1:8000/prescriptions/download/session/${session.session_id}`}
+                href={`https://api.rxguardian.xyz/prescriptions/download/session/${session.session_id}`}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-white text-sm font-bold shadow-lg shadow-[#119DD8]/20 hover:shadow-xl hover:shadow-[#119DD8]/30 transition-all duration-200 hover:-translate-y-0.5"
