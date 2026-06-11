@@ -163,7 +163,7 @@ def predict_medicine(
         }
 
     except Exception as e:
-
+        print("CNN ERROR =", e)
         return {
 
             "medicine_name": "Unknown",
