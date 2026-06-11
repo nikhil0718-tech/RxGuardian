@@ -30,6 +30,7 @@ const Reports = () => {
     try {
       if (!email) { console.log("Email not found"); return; }
       const response = await API.get(`/guardian/reports-email/${email}`);
+      console.log("REPORT =", response.data);
       setReport(response.data);
     } catch (error) {
       console.log(error);
