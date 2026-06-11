@@ -2,7 +2,7 @@ import axios from "axios";
 
 const API = axios.create({
 
-    baseURL: "http://20.40.57.133:8000"
+    baseURL: "https://api.rxguardian.xyz"
 });
 
 API.interceptors.request.use(
