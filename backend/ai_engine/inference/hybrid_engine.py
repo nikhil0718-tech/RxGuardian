@@ -74,7 +74,8 @@ def hybrid_predict(image_path):
     cnn_confidence = cnn_result[
         "confidence_score"
     ]
-
+    print("CNN PREDICTION =", cnn_prediction)
+    print("CNN CONFIDENCE =", cnn_confidence)
     # =================================================
     # OCR EXTRACTION
     # =================================================
@@ -123,6 +124,9 @@ def hybrid_predict(image_path):
             highest_score = score
 
             ocr_prediction = medicine
+
+    print("OCR PREDICTION =", ocr_prediction)
+    print("OCR SCORE =", highest_score)
 
     # =================================================
     # HYBRID CONFIDENCE LOGIC
