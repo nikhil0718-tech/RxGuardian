@@ -6,7 +6,7 @@ import {
 } from "lucide-react";
 
 import PatientLayout from "../../layouts/PatientLayout";
-import API from "../../api/api";
+import API, { API_BASE } from "../../api/api";
 
 /* ─── Motion variants ───────────────────────────────────────────────── */
 const page = {
@@ -168,7 +168,7 @@ function PrescriptionCard({ session, index }) {
               </p>
 
               <a
-                href={`https://api.rxguardian.xyz/prescriptions/download/session/${session.session_id}`}
+                href={`${API_BASE}/prescriptions/download/session/${session.session_id}`}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl text-white text-sm font-bold shadow-lg shadow-[#119DD8]/20 hover:shadow-xl hover:shadow-[#119DD8]/30 transition-all duration-200 hover:-translate-y-0.5"

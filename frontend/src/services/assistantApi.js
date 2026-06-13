@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_BASE } from "../api/api";
 
 export const askAssistant =
 async (
@@ -12,7 +13,7 @@ async (
   const response =
     await axios.post(
 
-      "https://api.rxguardian.xyz/assistant/chat",
+      `${API_BASE}/assistant/chat`,
 
       {
 

@@ -339,7 +339,7 @@ const CreatePrescription = () => {
                 >
                   <p className="text-sm text-emerald-700 font-semibold mb-3">✓ Prescription created successfully!</p>
                   <a
-                    href={`https://api.rxguardian.xyz/prescriptions/download/session/${sessionId}`}
+                    href={`${API_BASE}/prescriptions/download/session/${sessionId}`}
                     target="_blank"
                     rel="noreferrer"
                     className="inline-flex items-center gap-2 px-6 py-2.5 rounded-2xl text-white text-sm font-bold shadow-lg shadow-emerald-500/20 hover:shadow-xl transition-all duration-200 hover:-translate-y-0.5"

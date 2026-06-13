@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_BASE } from "../api/api";
 
 export default function MedicineChat({
   medicine
@@ -20,7 +21,7 @@ export default function MedicineChat({
     const response =
     await axios.post(
 
-      "https://api.rxguardian.xyz/medicine-chat/ask",
+      `${API_BASE}/medicine-chat/ask`,
 
       {
         medicine_name:

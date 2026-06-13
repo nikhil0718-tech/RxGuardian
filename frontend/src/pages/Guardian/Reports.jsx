@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Download, FileText, Activity, CheckCircle2, AlertCircle, Clock3, TrendingUp } from "lucide-react";
 
 import GuardianLayout from "../../layouts/GuardianLayout";
-import API from "../../api/api";
+import API, { API_BASE } from "../../api/api";
 
 /* ─── Motion variants ───────────────────────────────────────────────── */
 const page = {
@@ -196,7 +196,7 @@ const Reports = () => {
               </div>
 {/* http://127.0.0.1:8000 */}
               <a
-                href={`https://api.rxguardian.xyz/guardian/download-report/${email}`}
+                href={`${API_BASE}/guardian/download-report/${email}`}
                 target="_blank"
                 rel="noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-3 rounded-2xl text-white text-sm font-bold shadow-lg shadow-emerald-500/20 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-200 hover:-translate-y-0.5 flex-shrink-0"

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { API_BASE } from "../api/api";
 
 export const uploadMedicine =
 async (file) => {
@@ -14,7 +15,7 @@ async (file) => {
   const response =
     await axios.post(
 
-      "https://api.rxguardian.xyz/medicine/analyze",
+      `${API_BASE}/medicine/analyze`,
 
       formData,
 

@@ -8,6 +8,7 @@ import {
 import {
   uploadMedicine
 } from "../../services/medicineUploadApi";
+import { API_BASE } from "../../api/api";
 
 export default function RxGuardianAssistant({
   forceOpen = false
@@ -112,7 +113,7 @@ I'm here to help with medicine information and guidance.`
 });
         await axios.post(
 
-          "https://api.rxguardian.xyz/assistant/set-context",
+          `${API_BASE}/assistant/set-context`,
 
           {
 

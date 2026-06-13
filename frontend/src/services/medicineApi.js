@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const API_URL = "https://api.rxguardian.xyz";
+import { API_BASE } from "../api/api";
 
 export const analyzeMedicine =
   async (file) => {
