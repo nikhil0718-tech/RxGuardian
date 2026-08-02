@@ -1,0 +1,101 @@
+{
+  "ascoril": {
+    "medicine_name": "Ascoril",
+    "generic_name": "Cough Syrup Combination",
+    "usage": "Used for relief from productive cough and chest congestion.",
+    "best_time": "Use according to the prescribed schedule.",
+    "dosage": "Follow healthcare professional instructions.",
+    "precautions": "Avoid self-medication and follow label instructions.",
+    "side_effects": "Drowsiness, nausea, dizziness."
+  },
+
+  "augmentin": {
+    "medicine_name": "Augmentin",
+    "generic_name": "Amoxicillin + Clavulanic Acid",
+    "usage": "Used to treat bacterial infections.",
+    "best_time": "Often taken with food to reduce stomach discomfort.",
+    "dosage": "Complete the full prescribed course.",
+    "precautions": "Use only when prescribed by a healthcare professional.",
+    "side_effects": "Diarrhea, nausea, stomach upset."
+  },
+
+  "azithromycin": {
+    "medicine_name": "Azithromycin",
+    "generic_name": "Azithromycin",
+    "usage": "Used to treat bacterial infections.",
+    "best_time": "Take exactly as directed by a healthcare professional.",
+    "dosage": "Complete the prescribed course.",
+    "precautions": "Do not stop treatment early without medical advice.",
+    "side_effects": "Nausea, diarrhea, abdominal discomfort."
+  },
+
+  "cetirizine": {
+    "medicine_name": "Cetirizine",
+    "generic_name": "Cetirizine Hydrochloride",
+    "usage": "Used for allergy symptoms such as sneezing and itching.",
+    "best_time": "Often taken in the evening if drowsiness occurs.",
+    "dosage": "Use as directed.",
+    "precautions": "May cause drowsiness in some people.",
+    "side_effects": "Sleepiness, dry mouth."
+  },
+
+  "combiflam": {
+    "medicine_name": "Combiflam",
+    "generic_name": "Ibuprofen + Paracetamol",
+    "usage": "Used for pain relief and fever reduction.",
+    "best_time": "Generally taken after food if advised.",
+    "dosage": "Use only as directed.",
+    "precautions": "Avoid exceeding the recommended amount.",
+    "side_effects": "Acidity, nausea, stomach discomfort."
+  },
+
+  "crocin": {
+    "medicine_name": "Crocin",
+    "generic_name": "Paracetamol",
+    "usage": "Used for fever and pain relief.",
+    "best_time": "Can be taken with or without food.",
+    "dosage": "Follow healthcare professional instructions.",
+    "precautions": "Avoid overdose.",
+    "side_effects": "Nausea, skin rash."
+  },
+
+  "dolo_650": {
+    "medicine_name": "Dolo 650",
+    "generic_name": "Paracetamol",
+    "usage": "Used to reduce fever and relieve mild to moderate pain.",
+    "best_time": "Can be taken with or without food.",
+    "dosage": "Use according to medical advice.",
+    "precautions": "Avoid exceeding recommended daily limits.",
+    "side_effects": "Nausea, allergic reactions."
+  },
+
+  "pantoprazole": {
+    "medicine_name": "Pantoprazole",
+    "generic_name": "Pantoprazole",
+    "usage": "Used for acidity, reflux, and stomach ulcer conditions.",
+    "best_time": "Often taken before meals as directed.",
+    "dosage": "Use as prescribed.",
+    "precautions": "Do not alter treatment without medical advice.",
+    "side_effects": "Headache, diarrhea, nausea."
+  },
+
+  "sinarest": {
+    "medicine_name": "Sinarest",
+    "generic_name": "Cold and Flu Combination",
+    "usage": "Used for common cold symptoms and nasal congestion.",
+    "best_time": "Use according to package or professional instructions.",
+    "dosage": "Follow recommended directions.",
+    "precautions": "May cause drowsiness.",
+    "side_effects": "Sleepiness, dry mouth, dizziness."
+  },
+
+  "zincovit": {
+    "medicine_name": "Zincovit",
+    "generic_name": "Multivitamin and Multimineral Supplement",
+    "usage": "Used to support nutritional supplementation.",
+    "best_time": "Often taken after meals.",
+    "dosage": "Follow product or healthcare professional guidance.",
+    "precautions": "Do not exceed recommended intake.",
+    "side_effects": "Mild stomach upset, nausea."
+  }
+}

@@ -1,0 +1,18 @@
+DOCUMENT: Drug Interaction Awareness
+
+Drug interactions may alter the effectiveness of medicines or increase the risk of side effects.
+
+Recommendations:
+
+1. Inform healthcare providers about all medications being taken.
+2. Include prescription medicines, supplements, and herbal products.
+3. Avoid combining medicines without medical advice.
+4. Monitor for unusual symptoms after starting a new medicine.
+
+Common Examples:
+- Cetirizine + Alcohol → Increased drowsiness
+- Multiple Paracetamol Products → Risk of overdose
+- Certain Antibiotics + Antacids → Reduced effectiveness
+
+Keywords:
+drug interaction, medicine interaction, medication conflict, overdose prevention, safe combination
