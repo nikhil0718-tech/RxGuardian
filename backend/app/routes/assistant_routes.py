@@ -84,9 +84,7 @@ def set_context(data: dict):
 @router.post("/chat-v2")
 def chat_v2(
     request: AssistantRequest,
-    # user=Depends(
-    #     verify_token
-    # )
+    user=Depends(verify_token)
 ):
     print("CHAT V2 HIT")
 
@@ -94,8 +92,7 @@ def chat_v2(
 
     try:
 
-        # user_id = user["id"]
-        user_id = 1 # Replace with actual user ID if available
+        user_id = user["id"]
 
         answer = (
 
