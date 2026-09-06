@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import date
 
 from app.models.reminder_model import (
     Reminder
@@ -21,11 +22,15 @@ def update_missed_medicines(db):
         current_time.strftime("%H:%M")
     )
 
+    today = date.today()
+
     reminders = db.query(
         Reminder
     ).filter(
 
-        Reminder.status == "pending"
+        Reminder.status == "pending",
+
+        Reminder.reminder_date == today
 
     ).all()
 
@@ -71,7 +76,7 @@ def update_missed_medicines(db):
             # MARK MISSED ONLY AFTER 15 MIN
             # =====================================
 
-            if minutes_passed >= 15:
+            if minutes_passed >= 30:
 
                 reminder.status = "missed"
 

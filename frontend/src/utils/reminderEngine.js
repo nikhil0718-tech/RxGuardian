@@ -28,6 +28,22 @@ export const startMedicineReminderEngine = (
         const now = new Date();
 
         medicines.forEach((medicine) => {
+            // =================================
+            // ONLY PROCESS TODAY'S REMINDERS
+            // =================================
+
+            if (medicine.reminder_date) {
+
+                const today = new Date();
+
+                const todayString =
+                    today.toISOString().split("T")[0];
+
+                if (medicine.reminder_date !== todayString) {
+
+                    return;
+                }
+            }
 
             // =================================
             // SKIP TAKEN
@@ -114,7 +130,7 @@ export const startMedicineReminderEngine = (
 
                 &&
 
-                diffMinutes < 5
+                diffMinutes < 10
 
                 &&
 
@@ -141,11 +157,11 @@ export const startMedicineReminderEngine = (
 
             else if (
 
-                diffMinutes >= 5
+                diffMinutes >= 10
 
                 &&
 
-                diffMinutes < 10
+                diffMinutes < 20
 
                 &&
 
@@ -172,11 +188,11 @@ export const startMedicineReminderEngine = (
 
             else if (
 
-                diffMinutes >= 10
+                diffMinutes >= 20
 
                 &&
 
-                diffMinutes < 15
+                diffMinutes < 30
 
                 &&
 
@@ -203,7 +219,7 @@ export const startMedicineReminderEngine = (
 
             else if (
 
-                diffMinutes >= 15
+                diffMinutes >= 30
 
                 &&
 

@@ -1,8 +1,8 @@
 from apscheduler.schedulers.background import (
     BackgroundScheduler
 )
-
 from datetime import datetime
+from datetime import date
 
 from app.config.database import SessionLocal
 
@@ -39,7 +39,13 @@ def check_reminders():
             f"Checking reminders at {current_str}"
         )
 
-        reminders = db.query(Reminder).all()
+        today = date.today()
+
+        reminders = db.query(
+            Reminder
+        ).filter(
+            Reminder.reminder_date == today
+        ).all()
 
         for reminder in reminders:
 
@@ -64,15 +70,11 @@ def check_reminders():
                     "%H:%M"
                 )
 
-                reminder_time = current_time.replace(
+                reminder_time = datetime.combine(
 
-                    hour=reminder_time.hour,
+                    reminder.reminder_date,
 
-                    minute=reminder_time.minute,
-
-                    second=0,
-
-                    microsecond=0
+                    reminder_time.time()
                 )
 
                 # =====================================
@@ -91,7 +93,7 @@ def check_reminders():
 
                 if (
 
-                    0 <= diff_minutes < 5
+                    0 <= diff_minutes < 10
 
                     and
 
@@ -112,7 +114,7 @@ def check_reminders():
 
                 elif (
 
-                    5 <= diff_minutes < 10
+                    10 <= diff_minutes < 20
 
                     and
 
@@ -133,7 +135,7 @@ def check_reminders():
 
                 elif (
 
-                    10 <= diff_minutes < 15
+                    20 <= diff_minutes < 30
 
                     and
 
@@ -152,7 +154,7 @@ def check_reminders():
                 # MARK MISSED
                 # =====================================
 
-                elif diff_minutes >= 15:
+                elif diff_minutes >= 30:
 
                     if reminder.status not in [
 

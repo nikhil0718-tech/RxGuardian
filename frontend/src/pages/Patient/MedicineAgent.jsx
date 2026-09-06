@@ -4,10 +4,10 @@ import RxGuardianAssistant from "../../components/assistant/RxGuardianAssistant"
 export default function MedicineAgent() {
   return (
     <PatientLayout>
-      <div className="p-8 h-[calc(100vh-40px)]">
+      <div className="p-4 sm:p-6 lg:p-8 min-h-[calc(100vh-40px)]">
 
         {/* Header */}
-        <div className="bg-white rounded-[32px] border border-slate-200 p-8 shadow-sm mb-6">
+        <div className="bg-white rounded-[24px] border border-slate-200 p-4 sm:p-6 shadow-sm mb-4 sm:mb-6">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 text-sm font-semibold">
             🤖 AI ASSISTANT
           </div>
@@ -26,7 +26,7 @@ export default function MedicineAgent() {
         </div>
 
         {/* Assistant Container */}
-        <div className="bg-white rounded-[32px] border border-slate-200 shadow-sm overflow-hidden h-[70vh]">
+        <div className="bg-white rounded-[24px] border border-slate-200 shadow-sm overflow-hidden h-[calc(100vh-190px)] min-h-[420px]">
 
           <RxGuardianAssistant forceOpen />
 

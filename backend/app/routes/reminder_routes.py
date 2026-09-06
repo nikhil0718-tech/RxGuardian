@@ -2,6 +2,7 @@ from fastapi import APIRouter
 from fastapi import Depends
 from fastapi import UploadFile
 from fastapi import File
+from datetime import date
 
 from sqlalchemy.orm import Session
 
@@ -15,9 +16,6 @@ from app.models.user_model import (
     User
 )
 
-from app.utils.status_engine import (
-    update_missed_medicines
-)
 
 from app.utils.ai_helper import (
     verify_tablet_logic
@@ -29,6 +27,18 @@ from app.utils.guardian_alert_engine import (
 from app.models.guardian_alert_model import (
     GuardianAlert
 )
+
+
+print(
+    "REMINDER MODEL FILE =",
+    Reminder.__module__
+)
+
+print(
+    "REMINDER COLUMNS =",
+    Reminder.__table__.columns.keys()
+)
+
 import os
 
 router = APIRouter(
@@ -52,8 +62,6 @@ def get_patient_reminders(
 ):
 
     try:
-
-        update_missed_medicines(db)
 
         reminders = db.query(
             Reminder
@@ -87,6 +95,9 @@ def get_patient_reminders(
 
                 "scheduled_time":
                 reminder.scheduled_time,
+
+                "reminder_date":
+                reminder.reminder_date,
 
                 "status":
                 reminder.status,
@@ -136,7 +147,7 @@ def get_patient_reminders_by_email(
 
         return []
 
-    update_missed_medicines(db)
+    today = date.today()
 
     reminders = db.query(
 
@@ -145,11 +156,14 @@ def get_patient_reminders_by_email(
     ).filter(
 
         Reminder.patient_id
-        == patient.id
+        == patient.id,
+
+        Reminder.reminder_date
+        == today
 
     ).order_by(
 
-        Reminder.id.desc()
+        Reminder.scheduled_time.asc()
 
     ).all()
 
@@ -164,6 +178,8 @@ def get_patient_reminders_by_email(
             "medicine_name": reminder.medicine_name,
 
             "scheduled_time": reminder.scheduled_time,
+
+            "reminder_date": reminder.reminder_date,
 
             "status": reminder.status,
 

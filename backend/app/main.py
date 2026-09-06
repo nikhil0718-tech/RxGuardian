@@ -5,8 +5,8 @@ from fastapi.middleware.cors import (
     CORSMiddleware
 )
 
-import threading
-import time
+# import threading
+# import time
 
 # =====================================================
 # DATABASE
@@ -15,14 +15,15 @@ import time
 from app.config.database import (
     get_db
 )
+from app.utils.reminder_scheduler import start_scheduler
 
-# =====================================================
-# ADVANCED REMINDER ENGINE
-# =====================================================
+# # =====================================================
+# # ADVANCED REMINDER ENGINE
+# # =====================================================
 
-from app.utils.advanced_reminder_scheduler import (
-    process_reminders
-)
+# from app.utils.advanced_reminder_scheduler import (
+#     process_reminders
+# )
 
 # =====================================================
 # IMPORT ROUTES
@@ -182,28 +183,28 @@ app.include_router(
 # ADVANCED REMINDER BACKGROUND ENGINE
 # =====================================================
 
-def reminder_background():
+# def reminder_background():
 
-    while True:
+#     while True:
 
-        try:
+#         try:
 
-            db = next(get_db())
+#             db = next(get_db())
 
-            process_reminders(db)
+#             process_reminders(db)
 
-            print(
-                "Checking reminders..."
-            )
+#             print(
+#                 "Checking reminders..."
+#             )
 
-        except Exception as e:
+#         except Exception as e:
 
-            print(
-                "REMINDER ENGINE ERROR:",
-                e
-            )
+#             print(
+#                 "REMINDER ENGINE ERROR:",
+#                 e
+#             )
 
-        time.sleep(60)
+#         time.sleep(60)
 
 # =====================================================
 # START BACKGROUND THREAD
@@ -211,9 +212,9 @@ def reminder_background():
 
 
 
-print(
-    "Advanced Reminder Scheduler Started"
-)
+# print(
+#     "Advanced Reminder Scheduler Started"
+# )
 
 # =====================================================
 # HOME ROUTE
@@ -246,12 +247,17 @@ def health_check():
         "project": "RxGuardian"
     }
 
+# @app.on_event("startup")
+# def startup_event():
+
+#     threading.Thread(
+#         target=reminder_background,
+#         daemon=True
+#     ).start()
+
+#     print("Advanced Reminder Scheduler Started")
+
 @app.on_event("startup")
 def startup_event():
 
-    threading.Thread(
-        target=reminder_background,
-        daemon=True
-    ).start()
-
-    print("Advanced Reminder Scheduler Started")
+    start_scheduler()

@@ -307,10 +307,14 @@ console.log(
     onClick={() => setIsOpen(!isOpen)}
     className="
     fixed
-    bottom-6
-    right-6
-    w-16
-    h-16
+    bottom-4
+    right-4
+    sm:bottom-6
+    sm:right-6
+    w-14
+    h-14
+    sm:w-16
+    sm:h-16
     rounded-full
     bg-gradient-to-br
     from-emerald-500
@@ -348,10 +352,14 @@ console.log(
       `
       : `
         fixed
-        bottom-24
-        right-6
-        w-[420px]
-        h-[650px]
+        bottom-20
+        right-2
+        w-[calc(100vw-1rem)]
+        h-[min(540px,calc(100vh-5rem))]
+        max-h-[540px]
+        sm:bottom-24
+        sm:right-6
+        sm:w-[360px]
         bg-white
         rounded-[30px]
         shadow-[0_25px_80px_rgba(0,0,0,0.15)]
@@ -375,7 +383,7 @@ console.log(
             via-cyan-600
             to-blue-600
             text-white
-            p-5
+            p-3
             "
 
           >
@@ -392,7 +400,7 @@ console.log(
 
                 <h2
                   className="
-                  text-lg
+                  text-base
                   font-bold
                   "
                 >
@@ -401,7 +409,7 @@ console.log(
 
                 <p
                   className="
-                  text-xs
+                  text-[11px]
                   text-white/90
                   "
                 >
@@ -435,7 +443,7 @@ console.log(
   className="
   flex-1
   overflow-y-auto
-  p-4
+  p-3
   bg-slate-50
   space-y-3
   "
@@ -473,10 +481,11 @@ console.log(
                         from-cyan-500
                         to-blue-600
                         text-white
-                        px-4
-                        py-3
+                        px-3
+                        py-2
                         rounded-3xl
-                        max-w-[85%]
+                        max-w-[82%]
+                        text-sm
                         whitespace-pre-wrap
                         `
 
@@ -485,10 +494,11 @@ console.log(
                         border
                         border-slate-200
                         text-slate-800
-                        px-4
-                        py-3
+                        px-3
+                        py-2
                         rounded-3xl
-                        max-w-[85%]
+                        max-w-[82%]
+                        text-sm
                         whitespace-pre-wrap
                         shadow-sm
                         `
@@ -637,7 +647,7 @@ console.log(
   className="
   bg-white
   border-t
-  p-3
+  p-2
   mt-auto
   "
 >
@@ -650,8 +660,8 @@ console.log(
     flex
     items-center
     justify-between
-    px-3
-    py-2
+    px-2
+    py-1.5
     bg-emerald-50
     border
     border-emerald-200

@@ -17,3 +17,5 @@ embedding_model = SentenceTransformer(
 # which ChromaDB can search.
 
 # This is your first real RAG component.
+
+# model should be same as chroma db model. If you change the model, you need to re-embed all the data and re-upload to chroma db.

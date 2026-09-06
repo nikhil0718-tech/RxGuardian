@@ -124,13 +124,11 @@ def create_prescription_session(
         start_date = date.today()
 
         end_date = (
-
-            start_date +
-
-            timedelta(
-                days=duration_days
-            )
-        )
+    start_date +
+    timedelta(
+        days=duration_days - 1
+    )
+)
         print("DURATION:", medicine["duration"])
         print("START DATE:", start_date)
         print("END DATE:", end_date)
@@ -170,39 +168,60 @@ def create_prescription_session(
 
         db.refresh(prescription)
         print(
-    "SAVED:",
-    prescription.start_date,
-    prescription.end_date
-)
-        # =================================
-        # CREATE SMART REMINDER
-        # =================================
-
-        reminder = Reminder(
-
-            patient_id=patient_id,
-
-            prescription_id=
-            prescription.id,
-
-            medicine_name=
-            medicine["medicine_name"],
-
-            scheduled_time=
-            medicine["scheduled_time"],
-
-            status="pending",
-
-            notification_count=0,
-
-            guardian_notified=False
+            "SAVED:",
+            prescription.start_date,
+            prescription.end_date
         )
+# =================================
+# CREATE DAILY SMART REMINDERS
+# =================================
 
-        db.add(reminder)
+        for day_offset in range(duration_days):
 
-        db.commit()
+            reminder_date = (
+                start_date +
+                timedelta(days=day_offset)
+            )
 
-        db.refresh(reminder)
+            reminder = Reminder(
+
+                patient_id=patient_id,
+
+                prescription_id=
+                prescription.id,
+
+                medicine_name=
+                medicine["medicine_name"],
+
+                scheduled_time=
+                medicine["scheduled_time"],
+
+                reminder_date=
+                reminder_date,
+
+                status="pending",
+
+                notification_count=0,
+
+                guardian_notified=False,
+
+                medicine_verified=False
+            )
+
+            db.add(reminder)
+
+            db.commit()
+
+            db.refresh(reminder)
+
+            print(
+
+                f"Daily Reminder Created -> "
+                f"{reminder.medicine_name} | "
+                f"{reminder.reminder_date} | "
+                f"{reminder.scheduled_time}"
+
+            )
 
         print(
 

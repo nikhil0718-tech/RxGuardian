@@ -28,3 +28,6 @@ dist-ssr
 *.sw?
 uploads/
 *.pdf
+
+# ChromaDB generated files
+backend/app/rag/chroma_db/

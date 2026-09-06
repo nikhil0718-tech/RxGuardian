@@ -1,153 +1,344 @@
 import os
+import json
 
+from dotenv import load_dotenv
 from groq import Groq
 
+
+# ============================================================
+# ENVIRONMENT
+# ============================================================
+
+load_dotenv()
+
+GROQ_MODEL = os.getenv(
+    "GROQ_ROUTER_MODEL",
+    "openai/gpt-oss-20b"
+)
+
 client = Groq(
-    api_key=os.getenv(
-        "GROQ_API_KEY"
-    )
+    api_key=os.getenv("GROQ_API_KEY")
 )
 
 
-def llm_classify(query):
+# ============================================================
+# TOKEN-EFFICIENT ROUTER PROMPT
+# ============================================================
 
-    prompt = f"""
-You are an intent classifier.
+SYSTEM_PROMPT = """
+You are RxGuardian's semantic intent router.
+Classify the CURRENT query. Do not answer.
 
-Classify the user's medicine-related query into exactly one category.
+INTENTS:
+MEDICINE_INFO: general medicine info, uses, dosage, timing,
+generic name, composition, side effects, explanation.
+MEDICINE_SAFETY: precautions, warnings, contraindications,
+overdose, pregnancy, breastfeeding, storage.
+MEDICINE_INTERACTION: whether medicines interact or can be
+taken together.
+MISSED_DOSE_GUIDANCE: what to do after missing a dose.
+TODAY_PRESCRIPTION: what medicine(s) to take today according
+to the prescription, including today's dose of a named medicine.
+CURRENT_PRESCRIPTION: current/active or doctor's prescription.
+PRESCRIPTION_CHECK: whether a named medicine is prescribed.
+PENDING_MEDICINES: pending medicines/doses.
+MISSED_MEDICINES: missed medicines/doses.
+DUE_MEDICINES: medicines/doses due now.
+UPCOMING_REMINDERS: upcoming reminders.
+REMINDER_STATUS: reminder status.
+ADHERENCE: medication adherence/score.
 
-Categories:
+RULES:
+Classify by meaning, not keywords.
+General dosage or side effects → MEDICINE_INFO.
+Today's dose or what to take today → TODAY_PRESCRIPTION.
+Safety → MEDICINE_SAFETY.
+Medicine + medicine → MEDICINE_INTERACTION.
+Action after missing → MISSED_DOSE_GUIDANCE.
+Which medicines were missed → MISSED_MEDICINES.
+Current prescription → CURRENT_PRESCRIPTION.
+Specific prescription check → PRESCRIPTION_CHECK.
+Pending/due/upcoming/status → matching reminder intent.
+Adherence → ADHERENCE.
 
-json
-- General medicine information.
-- Usage, side effects, dosage, best time, generic name, medicine details, explanation, follow-up questions about a medicine.
+Extract only explicitly named medicines.
+Never infer medicines.
+One medicine → medicine_name.
+Multiple → medicine_names.
+None → null and [].
 
-rag
-- Medicine safety, precautions, warnings, storage, drug interactions, missed dose guidance, overdose, antibiotics, pregnancy safety.
-
-prescription
-- Questions requiring today's prescription.
-- Which medicines to take.
-- Current prescriptions.
-- Whether a medicine is prescribed today.
-
-reminder
-- Reminder status.
-- Pending medicines.
-- Missed medicines.
-- Due medicines.
-- Adherence.
-- Reminder history.
-
-Rules:
-
-- Questions about the medicine itself → json
-- Questions about medicine safety or interactions → rag
-- Questions about prescribed medicines → prescription
-- Questions about reminders or missed doses today → reminder
-
-Return ONLY one word:
-
-json
-rag
-prescription
-reminder
-
-Query:
-{query}
-
-Category:
+Return ONLY this JSON structure:
+{"intent":"MEDICINE_INFO","medicine_name":null,"medicine_names":[]}
 """
 
-    query_lower = query.lower()
-    if "used for" in query_lower:
-        return "json"
 
-    if "what is this medicine" in query_lower:
-        return "json"
+# ============================================================
+# ALLOWED INTENTS
+# ============================================================
 
-    if "tell me about this medicine" in query_lower:
-        return "json"
+ALLOWED_INTENTS = {
+    "MEDICINE_INFO",
+    "MEDICINE_SAFETY",
+    "MEDICINE_INTERACTION",
+    "MISSED_DOSE_GUIDANCE",
+    "TODAY_PRESCRIPTION",
+    "CURRENT_PRESCRIPTION",
+    "PRESCRIPTION_CHECK",
+    "PENDING_MEDICINES",
+    "MISSED_MEDICINES",
+    "DUE_MEDICINES",
+    "UPCOMING_REMINDERS",
+    "REMINDER_STATUS",
+    "ADHERENCE",
+}
 
-    if "side effect" in query_lower:
-        return "json"
 
-    if "dosage" in query_lower:
-        return "json"
+# ============================================================
+# DEFAULT RESULT
+# ============================================================
 
-    if "precaution" in query_lower:
-        return "rag"
+def default_result():
+    return {
+        "intent": "MEDICINE_INFO",
+        "medicine_name": None,
+        "medicine_names": [],
+    }
 
-    if "interaction" in query_lower:
-        return "rag"
 
-    if "can i take" in query_lower and "together" in query_lower:
-        return "rag"
+# ============================================================
+# NORMALIZATION
+# ============================================================
 
-    if "forgot" in query_lower:
-        return "rag"
+def normalize_medicine_name(value):
 
-    if "missed dose" in query_lower:
-        return "rag"
+    if value is None:
+        return None
 
-    if "what should i do if i miss" in query_lower:
-        return "rag"
+    value = str(value).strip()
 
-    if "should i take it today" in query_lower:
-        return "prescription"
+    return value if value else None
 
-    if "what medicines should i take today" in query_lower:
-        return "prescription"
 
-    if "current medicines" in query_lower:
-        return "prescription"
+def normalize_medicine_names(values):
 
-    if "active medicines" in query_lower:
-        return "prescription"
+    if not isinstance(values, list):
+        return []
 
-    if "did i miss today's dose" in query_lower:
-        return "reminder"
+    result = []
 
-    if "did i miss any medicines" in query_lower:
-        return "reminder"
+    for value in values:
 
-    if "pending medicines" in query_lower:
-        return "reminder"
+        value = normalize_medicine_name(value)
 
-    if "pending doses" in query_lower:
-        return "reminder" 
-    response = (
-        client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+        if value and value not in result:
+            result.append(value)
+
+    return result
+
+
+# ============================================================
+# LLM ROUTER
+# ============================================================
+
+def llm_classify(query: str) -> dict:
+
+    if not query or not query.strip():
+        return default_result()
+
+    query = query.strip()
+
+    try:
+
+        response = client.chat.completions.create(
+
+            model=GROQ_MODEL,
+
             messages=[
                 {
+                    "role": "system",
+                    "content": SYSTEM_PROMPT,
+                },
+                {
                     "role": "user",
-                    "content": prompt
-                }
+                    "content": query,
+                },
             ],
-            temperature=0
+
+            temperature=0,
+
+            # IMPORTANT:
+            # GPT-OSS is a reasoning model.
+            # 64 can be too small to finish JSON generation.
+            max_completion_tokens=256,
+
+            # JSON mode
+            response_format={
+                "type": "json_object"
+            },
+
+            # Do not return reasoning in the response.
+            include_reasoning=False,
         )
-    )
 
-    result = (
-        response
-        .choices[0]
-        .message
-        .content
-        .strip()
-        .lower()
-    )
+        content = (
+            response
+            .choices[0]
+            .message
+            .content
+        )
 
-    if "json" in result:
-        return "json"
+        print()
+        print("=" * 30)
+        print("LLM ROUTER")
+        print("=" * 30)
+        print("QUERY:", query)
+        print("MODEL:", GROQ_MODEL)
+        print("RAW CONTENT:", repr(content))
+        print("=" * 30)
 
-    if "rag" in result:
-        return "rag"
+        if not content:
 
-    if "prescription" in result:
-        return "prescription"
+            print(
+                "WARNING: Empty LLM response"
+            )
 
-    if "reminder" in result:
-        return "reminder"
+            return default_result()
 
-    return "json"
+        # ----------------------------------------------------
+        # PARSE JSON
+        # ----------------------------------------------------
+
+        data = json.loads(content)
+
+        if not isinstance(data, dict):
+
+            print(
+                "WARNING: Invalid JSON object"
+            )
+
+            return default_result()
+
+        # ----------------------------------------------------
+        # INTENT
+        # ----------------------------------------------------
+
+        intent = data.get(
+            "intent",
+            ""
+        )
+
+        intent = (
+            str(intent)
+            .strip()
+            .upper()
+        )
+
+        # ----------------------------------------------------
+        # MEDICINE NAME
+        # ----------------------------------------------------
+
+        medicine_name = normalize_medicine_name(
+            data.get("medicine_name")
+        )
+
+        # ----------------------------------------------------
+        # MEDICINE NAMES
+        # ----------------------------------------------------
+
+        medicine_names = normalize_medicine_names(
+            data.get(
+                "medicine_names",
+                []
+            )
+        )
+
+        # ----------------------------------------------------
+        # VALIDATE INTENT
+        # ----------------------------------------------------
+
+        if intent not in ALLOWED_INTENTS:
+
+            print(
+                "WARNING: Invalid intent:",
+                repr(intent)
+            )
+
+            return default_result()
+
+        # ----------------------------------------------------
+        # INTERACTION
+        # ----------------------------------------------------
+        #
+        # Multiple medicines belong in medicine_names.
+        #
+        # Example:
+        # cetirizine + Dolo 650
+        #
+        # medicine_name = None
+        # medicine_names = [...]
+        # ----------------------------------------------------
+
+        if intent == "MEDICINE_INTERACTION":
+
+            if medicine_name:
+
+                if medicine_name not in medicine_names:
+
+                    medicine_names.insert(
+                        0,
+                        medicine_name
+                    )
+
+                medicine_name = None
+
+        # ----------------------------------------------------
+        # SINGLE MEDICINE
+        # ----------------------------------------------------
+
+        elif (
+            medicine_name is None
+            and len(medicine_names) == 1
+        ):
+
+            medicine_name = medicine_names[0]
+
+            medicine_names = []
+
+        # ----------------------------------------------------
+        # FINAL RESULT
+        # ----------------------------------------------------
+
+        result = {
+            "intent": intent,
+            "medicine_name": medicine_name,
+            "medicine_names": medicine_names,
+        }
+
+        print(
+            "PARSED ROUTER RESULT:",
+            result
+        )
+
+        return result
+
+    except json.JSONDecodeError as e:
+
+        print(
+            "LLM ROUTER JSON ERROR:",
+            str(e)
+        )
+
+        return default_result()
+
+    except Exception as e:
+
+        print(
+            "LLM ROUTER ERROR:",
+            str(e)
+        )
+
+        return {
+            "intent": "ROUTER_ERROR",
+            "medicine_name": None,
+            "medicine_names": []
+        }
